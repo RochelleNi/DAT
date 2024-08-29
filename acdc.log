@@ -1,0 +1,408 @@
+Config (path: local_configs/segformer/B5/segformer.b5.1024x1024.acdc.160k.py): {'norm_cfg': {'type': 'SyncBN', 'requires_grad': True}, 'find_unused_parameters': True, 'model': {'type': 'EncoderDecoder', 'pretrained': None, 'backbone': {'type': 'mit_b5', 'style': 'pytorch'}, 'decode_head': {'type': 'SegFormerHead', 'in_channels': [64, 128, 320, 512], 'in_index': [0, 1, 2, 3], 'feature_strides': [4, 8, 16, 32], 'channels': 128, 'dropout_ratio': 0.1, 'num_classes': 19, 'norm_cfg': {'type': 'SyncBN', 'requires_grad': True}, 'align_corners': False, 'decoder_params': {'embed_dim': 768}, 'loss_decode': {'type': 'CrossEntropyLoss', 'use_sigmoid': False, 'loss_weight': 1.0, 'reduction': 'none'}}, 'train_cfg': {}, 'test_cfg': {'mode': 'slide', 'crop_size': (1024, 1024), 'stride': (768, 768)}}, 'dataset_type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_norm_cfg': {'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, 'crop_size': (1024, 1024), 'train_pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'LoadAnnotations'}, {'type': 'Resize', 'img_scale': (1920, 1080), 'ratio_range': (0.5, 2.0)}, {'type': 'RandomCrop', 'crop_size': (1024, 1024), 'cat_max_ratio': 0.75}, {'type': 'RandomFlip', 'prob': 0.5}, {'type': 'PhotoMetricDistortion'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'Pad', 'size': (1024, 1024), 'pad_val': 0, 'seg_pad_val': 255}, {'type': 'DefaultFormatBundle'}, {'type': 'Collect', 'keys': ['img', 'gt_semantic_seg']}], 'test_pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'MultiScaleFlipAug', 'img_scale': (960, 540), 'flip': False, 'transforms': [{'type': 'Resize', 'keep_ratio': True}, {'type': 'RandomFlip'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'ImageToTensor', 'keys': ['img']}, {'type': 'Collect', 'keys': ['img']}]}], 'data': {'samples_per_gpu': 1, 'workers_per_gpu': 2, 'train': {'type': 'RepeatDataset', 'times': 500, 'dataset': {'type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_dir': 'leftImg8bit/train', 'ann_dir': 'gtFine/train', 'pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'LoadAnnotations'}, {'type': 'Resize', 'img_scale': (1920, 1080), 'ratio_range': (0.5, 2.0)}, {'type': 'RandomCrop', 'crop_size': (1024, 1024), 'cat_max_ratio': 0.75}, {'type': 'RandomFlip', 'prob': 0.5}, {'type': 'PhotoMetricDistortion'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'Pad', 'size': (1024, 1024), 'pad_val': 0, 'seg_pad_val': 255}, {'type': 'DefaultFormatBundle'}, {'type': 'Collect', 'keys': ['img', 'gt_semantic_seg']}]}}, 'val': {'type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_dir': 'rgb_anon/fog/train', 'ann_dir': 'gt/fog/train', 'pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'MultiScaleFlipAug', 'img_scale': (960, 540), 'flip': False, 'transforms': [{'type': 'Resize', 'keep_ratio': True}, {'type': 'RandomFlip'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'ImageToTensor', 'keys': ['img']}, {'type': 'Collect', 'keys': ['img']}]}]}, 'test': {'type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_dir': 'rgb_anon/fog/train', 'ann_dir': 'gt/fog/train', 'pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'MultiScaleFlipAug', 'img_scale': (960, 540), 'flip': True, 'transforms': [{'type': 'Resize', 'keep_ratio': True}, {'type': 'RandomFlip'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'ImageToTensor', 'keys': ['img']}, {'type': 'Collect', 'keys': ['img']}], 'img_ratios': [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]}], 'test_mode': True}, 'test1': {'type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_dir': 'rgb_anon/night/train', 'ann_dir': 'gt/night/train', 'pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'MultiScaleFlipAug', 'img_scale': (960, 540), 'flip': True, 'transforms': [{'type': 'Resize', 'keep_ratio': True}, {'type': 'RandomFlip'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'ImageToTensor', 'keys': ['img']}, {'type': 'Collect', 'keys': ['img']}], 'img_ratios': [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]}]}, 'test2': {'type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_dir': 'rgb_anon/rain/train', 'ann_dir': 'gt/rain/train', 'pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'MultiScaleFlipAug', 'img_scale': (960, 540), 'flip': True, 'transforms': [{'type': 'Resize', 'keep_ratio': True}, {'type': 'RandomFlip'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'ImageToTensor', 'keys': ['img']}, {'type': 'Collect', 'keys': ['img']}], 'img_ratios': [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]}]}, 'test3': {'type': 'ACDCDataset', 'data_root': 'data/data_acdc/', 'img_dir': 'rgb_anon/snow/train', 'ann_dir': 'gt/snow/train', 'pipeline': [{'type': 'LoadImageFromFile'}, {'type': 'MultiScaleFlipAug', 'img_scale': (960, 540), 'flip': True, 'transforms': [{'type': 'Resize', 'keep_ratio': True}, {'type': 'RandomFlip'}, {'type': 'Normalize', 'mean': [123.675, 116.28, 103.53], 'std': [58.395, 57.12, 57.375], 'to_rgb': True}, {'type': 'ImageToTensor', 'keys': ['img']}, {'type': 'Collect', 'keys': ['img']}], 'img_ratios': [0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]}]}}, 'log_config': {'interval': 50, 'hooks': [{'type': 'TextLoggerHook', 'by_epoch': False}]}, 'dist_params': {'backend': 'nccl'}, 'log_level': 'INFO', 'load_from': None, 'resume_from': None, 'workflow': [('train', 1)], 'cudnn_benchmark': True, 'optimizer': {'type': 'AdamW', 'lr': 6e-05, 'betas': (0.9, 0.999), 'weight_decay': 0.01, 'paramwise_cfg': {'custom_keys': {'pos_block': {'decay_mult': 0.0}, 'norm': {'decay_mult': 0.0}, 'head': {'lr_mult': 10.0}}}}, 'optimizer_config': {}, 'lr_config': {'policy': 'poly', 'warmup': 'linear', 'warmup_iters': 1500, 'warmup_ratio': 1e-06, 'power': 1.0, 'min_lr': 0.0, 'by_epoch': False}, 'runner': {'type': 'IterBasedRunner', 'max_iters': 160000}, 'checkpoint_config': {'by_epoch': False, 'interval': 4000}, 'evaluation': {'interval': 4000, 'metric': 'mIoU'}}
+Use load_from_local loader
+learning rate
+0.00025
+revisiting 0
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 94.24 | 99.39 |
+| sidewalk      | 65.8  | 73.6  |
+| building      | 80.18 | 97.24 |
+| wall          | 58.67 | 68.23 |
+| fence         | 25.71 | 27.53 |
+| pole          | 49.9  | 56.98 |
+| traffic light | 43.63 | 48.16 |
+| traffic sign  | 73.45 | 90.19 |
+| vegetation    | 87.56 | 92.2  |
+| terrain       | 71.53 | 88.08 |
+| sky           | 97.88 | 99.0  |
+| person        | 68.47 | 82.41 |
+| rider         | 72.11 | 88.43 |
+| car           | 87.21 | 95.1  |
+| truck         | 75.97 | 80.32 |
+| bus           | 93.94 | 98.05 |
+| train         | 88.99 | 96.55 |
+| motorcycle    | 58.69 | 65.82 |
+| bicycle       | 67.43 | 86.94 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 71.65 | 80.75 | 94.01 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 89.88 | 98.78 |
+| sidewalk      | 56.95 | 62.95 |
+| building      | 66.54 | 89.69 |
+| wall          | 31.33 | 38.77 |
+| fence         | 25.33 | 28.03 |
+| pole          | 45.96 | 53.96 |
+| traffic light | 48.69 | 59.4  |
+| traffic sign  | 44.13 | 48.57 |
+| vegetation    | 42.68 | 87.56 |
+| terrain       | 27.5  | 67.71 |
+| sky           | 1.16  | 1.16  |
+| person        | 54.47 | 75.63 |
+| rider         | 43.6  | 55.62 |
+| car           | 79.8  | 91.53 |
+| truck         | 23.04 | 73.32 |
+| bus           | 43.87 | 45.62 |
+| train         | 55.97 | 58.62 |
+| motorcycle    | 27.84 | 30.18 |
+| bicycle       | 35.5  | 42.02 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 44.43 | 58.38 | 73.11 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 86.1  | 97.05 |
+| sidewalk      | 54.83 | 59.33 |
+| building      | 89.68 | 97.43 |
+| wall          | 40.78 | 54.42 |
+| fence         | 27.99 | 34.15 |
+| pole          | 56.92 | 65.04 |
+| traffic light | 67.23 | 71.91 |
+| traffic sign  | 68.12 | 78.94 |
+| vegetation    | 91.03 | 95.44 |
+| terrain       | 63.68 | 88.36 |
+| sky           | 97.6  | 98.1  |
+| person        | 54.07 | 68.83 |
+| rider         | 58.21 | 84.18 |
+| car           | 82.4  | 91.21 |
+| truck         | 40.07 | 67.93 |
+| bus           | 78.83 | 84.04 |
+| train         | 70.98 | 88.75 |
+| motorcycle    | 51.37 | 62.25 |
+| bicycle       | 61.68 | 76.33 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 65.35 | 77.04 | 92.72 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 83.18 | 98.05 |
+| sidewalk      | 49.82 | 59.82 |
+| building      | 87.69 | 97.64 |
+| wall          | 48.12 | 54.05 |
+| fence         | 44.89 | 48.93 |
+| pole          | 59.96 | 66.41 |
+| traffic light | 73.81 | 79.99 |
+| traffic sign  | 70.8  | 80.86 |
+| vegetation    | 84.43 | 88.96 |
+| terrain       | 3.16  | 3.45  |
+| sky           | 97.56 | 98.46 |
+| person        | 68.08 | 84.29 |
+| rider         | 41.72 | 82.27 |
+| car           | 87.09 | 97.76 |
+| truck         | 61.47 | 65.14 |
+| bus           | 73.87 | 83.58 |
+| train         | 81.89 | 92.26 |
+| motorcycle    | 25.22 | 26.7  |
+| bicycle       | 51.93 | 69.91 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 62.88 | 72.55 | 91.38 |
++--------+-------+-------+-------+
+
+learning rate
+0.000125
+revisiting 1
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 94.1  | 99.44 |
+| sidewalk      | 65.66 | 71.68 |
+| building      | 78.78 | 97.59 |
+| wall          | 60.13 | 68.76 |
+| fence         | 23.28 | 24.72 |
+| pole          | 50.12 | 56.13 |
+| traffic light | 44.7  | 48.16 |
+| traffic sign  | 73.59 | 90.23 |
+| vegetation    | 87.27 | 92.32 |
+| terrain       | 72.12 | 87.04 |
+| sky           | 97.93 | 98.93 |
+| person        | 66.09 | 81.24 |
+| rider         | 67.37 | 81.59 |
+| car           | 86.7  | 97.07 |
+| truck         | 76.6  | 79.17 |
+| bus           | 93.7  | 97.98 |
+| train         | 92.84 | 96.18 |
+| motorcycle    | 61.66 | 67.53 |
+| bicycle       | 67.89 | 83.45 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 71.61 | 79.96 | 93.91 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 91.35 | 98.49 |
+| sidewalk      | 63.01 | 69.96 |
+| building      | 65.82 | 88.75 |
+| wall          | 31.59 | 37.6  |
+| fence         | 26.72 | 29.96 |
+| pole          | 44.78 | 52.71 |
+| traffic light | 49.4  | 56.92 |
+| traffic sign  | 45.25 | 50.76 |
+| vegetation    | 43.42 | 88.58 |
+| terrain       | 29.04 | 66.15 |
+| sky           | 3.16  | 3.16  |
+| person        | 51.15 | 71.81 |
+| rider         | 39.95 | 48.38 |
+| car           | 79.07 | 93.07 |
+| truck         | 28.83 | 72.85 |
+| bus           | 45.75 | 48.4  |
+| train         | 74.8  | 79.74 |
+| motorcycle    | 19.09 | 19.83 |
+| bicycle       | 26.04 | 28.32 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 45.17 | 58.18 | 74.02 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 86.66 | 97.58 |
+| sidewalk      | 56.39 | 60.05 |
+| building      | 90.07 | 97.28 |
+| wall          | 44.04 | 57.9  |
+| fence         | 31.45 | 38.38 |
+| pole          | 56.25 | 63.77 |
+| traffic light | 64.73 | 69.72 |
+| traffic sign  | 67.13 | 77.85 |
+| vegetation    | 90.82 | 95.78 |
+| terrain       | 64.52 | 87.55 |
+| sky           | 97.57 | 97.98 |
+| person        | 53.2  | 70.51 |
+| rider         | 60.57 | 82.18 |
+| car           | 80.49 | 90.46 |
+| truck         | 31.15 | 57.64 |
+| bus           | 65.18 | 68.58 |
+| train         | 63.88 | 89.55 |
+| motorcycle    | 47.25 | 56.12 |
+| bicycle       | 59.75 | 74.02 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 63.74 | 75.42 | 92.85 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 83.66 | 97.81 |
+| sidewalk      | 50.14 | 60.4  |
+| building      | 88.05 | 97.5  |
+| wall          | 51.81 | 57.98 |
+| fence         | 47.14 | 52.53 |
+| pole          | 58.01 | 63.42 |
+| traffic light | 71.57 | 78.3  |
+| traffic sign  | 68.86 | 78.61 |
+| vegetation    | 84.85 | 89.88 |
+| terrain       | 3.12  | 3.44  |
+| sky           | 97.46 | 98.36 |
+| person        | 66.85 | 84.13 |
+| rider         | 45.2  | 78.49 |
+| car           | 86.7  | 97.66 |
+| truck         | 65.29 | 67.85 |
+| bus           | 78.64 | 89.72 |
+| train         | 85.69 | 91.65 |
+| motorcycle    | 21.77 | 23.87 |
+| bicycle       | 48.17 | 61.34 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 63.32 | 72.26 | 91.54 |
++--------+-------+-------+-------+
+
+learning rate
+6.25e-05
+revisiting 2
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 94.12 | 99.47 |
+| sidewalk      | 65.94 | 72.27 |
+| building      | 78.7  | 97.52 |
+| wall          | 60.52 | 68.97 |
+| fence         | 22.06 | 23.35 |
+| pole          | 46.66 | 51.25 |
+| traffic light | 43.73 | 47.7  |
+| traffic sign  | 72.43 | 88.55 |
+| vegetation    | 87.12 | 92.22 |
+| terrain       | 71.24 | 86.75 |
+| sky           | 97.87 | 98.96 |
+| person        | 64.97 | 80.81 |
+| rider         | 64.87 | 77.82 |
+| car           | 86.38 | 96.55 |
+| truck         | 75.68 | 78.36 |
+| bus           | 93.8  | 97.96 |
+| train         | 91.75 | 96.28 |
+| motorcycle    | 57.51 | 65.39 |
+| bicycle       | 65.36 | 80.27 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 70.56 | 78.97 | 93.84 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 91.31 | 98.54 |
+| sidewalk      | 62.89 | 70.32 |
+| building      | 65.83 | 87.91 |
+| wall          | 29.27 | 34.6  |
+| fence         | 25.54 | 28.31 |
+| pole          | 42.88 | 49.55 |
+| traffic light | 49.03 | 57.57 |
+| traffic sign  | 45.28 | 51.12 |
+| vegetation    | 43.77 | 88.76 |
+| terrain       | 28.71 | 65.78 |
+| sky           | 6.14  | 6.17  |
+| person        | 49.88 | 71.81 |
+| rider         | 38.78 | 45.67 |
+| car           | 78.34 | 93.42 |
+| truck         | 25.42 | 74.2  |
+| bus           | 42.05 | 44.11 |
+| train         | 70.41 | 77.58 |
+| motorcycle    | 20.14 | 21.03 |
+| bicycle       | 24.61 | 26.46 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 44.23 | 57.52 | 74.27 |
++--------+-------+-------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 86.41 | 97.42 |
+| sidewalk      | 56.24 | 60.14 |
+| building      | 89.99 | 97.27 |
+| wall          | 42.66 | 55.16 |
+| fence         | 31.31 | 38.42 |
+| pole          | 55.86 | 62.56 |
+| traffic light | 63.96 | 68.88 |
+| traffic sign  | 66.25 | 76.66 |
+| vegetation    | 90.73 | 95.62 |
+| terrain       | 63.86 | 87.81 |
+| sky           | 97.64 | 98.11 |
+| person        | 52.02 | 69.53 |
+| rider         | 61.96 | 82.81 |
+| car           | 80.58 | 90.39 |
+| truck         | 32.79 | 59.3  |
+| bus           | 61.62 | 66.2  |
+| train         | 56.82 | 87.43 |
+| motorcycle    | 47.38 | 56.12 |
+| bicycle       | 59.49 | 73.35 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+------+-------+
+| Scope  | mIoU  | mAcc | aAcc  |
++--------+-------+------+-------+
+| global | 63.03 | 74.9 | 92.78 |
++--------+-------+------+-------+
+
+per class results:
+
++---------------+-------+-------+
+| Class         | IoU   | Acc   |
++---------------+-------+-------+
+| road          | 83.69 | 97.77 |
+| sidewalk      | 50.27 | 60.73 |
+| building      | 87.99 | 97.39 |
+| wall          | 51.15 | 57.2  |
+| fence         | 46.4  | 51.83 |
+| pole          | 56.41 | 61.41 |
+| traffic light | 70.88 | 77.53 |
+| traffic sign  | 67.77 | 78.07 |
+| vegetation    | 84.81 | 90.05 |
+| terrain       | 3.09  | 3.42  |
+| sky           | 97.42 | 98.39 |
+| person        | 66.02 | 82.95 |
+| rider         | 43.55 | 77.45 |
+| car           | 86.78 | 97.45 |
+| truck         | 64.03 | 66.67 |
+| bus           | 77.71 | 88.06 |
+| train         | 85.69 | 91.35 |
+| motorcycle    | 20.26 | 22.74 |
+| bicycle       | 48.57 | 59.84 |
++---------------+-------+-------+
+Summary:
+
++--------+-------+-------+-------+
+| Scope  | mIoU  | mAcc  | aAcc  |
++--------+-------+-------+-------+
+| global | 62.76 | 71.59 | 91.49 |
++--------+-------+-------+-------+
