@@ -7,3 +7,14 @@ This repo contains detailed implementation for [teacher-student forward propagat
 Training process can refer to [cotta](https://github.com/qinenergy/cotta) paper.
 
 Experimental results of DAT model on Cityscapes_to_ACDC and SHIFT datasets can be found in [acdc](https://github.com/RochelleNi/DAT/blob/main/acdc.log) and [shift](https://github.com/RochelleNi/DAT/blob/main/shift.log).
+
+## Citation
+Please cite our work if you find it useful.
+
+```bibtex
+@misc{ni2024distributionaware,
+      title={Distribution-Aware Continual Test-Time Adaptation for Semantic Segmentation}, 
+      author={Jiayi Ni and Senqiao Yang and Ran Xu and Jiaming Liu and Xiaoqi Li and Wenyu Jiao and Zehui Chen and Yi Liu and Shanghang Zhang},
+      year={2024}
+}
+```
